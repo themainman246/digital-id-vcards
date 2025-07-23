@@ -12,18 +12,16 @@
       background-color: #f9f9f9;
     }
     .button {
-      background-color: #FCD700;
-      color: #000;
+      background-color: #007AFF;
+      color: #fff;
       padding: 14px 24px;
       font-size: 16px;
-      font-weight: 600;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      margin-top: 20px;
     }
     .button:hover {
-      background-color: #e6c200;
+      background-color: #005FCC;
     }
   </style>
 </head>
@@ -34,13 +32,13 @@
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const contactSlug = params.get('contact') || 'default';
-    const fileUrl = `https://cdn.jsdelivr.net/gh/themainman246/digital-id-vcards/contacts/${contactSlug}-contact.vcf`;
+    const slug = params.get('contact') || 'default';
+    const fileUrl = `https://cdn.jsdelivr.net/gh/themainman246/digital-id-vcards/contacts/${slug}-contact.vcf`;
 
     function downloadVCF() {
       const link = document.createElement('a');
       link.href = fileUrl;
-      link.download = `${contactSlug}.vcf`;
+      link.download = `${slug}.vcf`;
       document.body.appendChild(link);
       link.click();
     }
