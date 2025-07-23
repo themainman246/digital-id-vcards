@@ -1,31 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Save Contact</title>
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const contactSlug = params.get('contact') || 'default';
-    const fileUrl = `https://themainman246.github.io/digital-id-vcards/contacts/${contactSlug}-contact.vcf`;
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const contactSlug = params.get('contact') || 'default';
+  const fileUrl = `https://themainman246.github.io/digital-id-vcards/contacts/${contactSlug}-contact.vcf`;
 
-    const isAndroid = /Android/i.test(navigator.userAgent);
-    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const isAndroid = /Android/i.test(navigator.userAgent);
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-    if (isIOS) {
-      window.location.href = fileUrl; // iOS auto-imports contact
-    } else if (isAndroid) {
-      const link = document.createElement('a');
-      link.href = fileUrl;
-      link.download = `${contactSlug}.vcf`;
-      document.body.appendChild(link);
-      link.click();
-    } else {
-      document.body.innerHTML = `<p>Unsupported device. You can download the contact <a href="${fileUrl}">here</a>.</p>`;
-    }
-  </script>
-</head>
-<body style="font-family: sans-serif; text-align: center; margin-top: 50px;">
-  <p>Redirecting to contact download...</p>
-</body>
-</html>
+  if (isIOS) {
+    window.location.href = fileUrl;
+  } else if (isAndroid) {
+    const anchor = document.createElement('a');
+    anchor.href = fileUrl;
+    anchor.download = `${contactSlug}.vcf`;
+    anchor.style.display = 'none';
+    document.body.appendChild(anchor);
+    anchor.click();
+
+    document.body.innerHTML = `
+      <p style="font-family: sans-serif; margin-top: 40px;">
+        📥 Contact file downloaded.<br>
+        Open your Contacts app → Import from file → Select <strong>${contactSlug}.vcf</strong>
+      </p>
+    `;
+  } else {
+    document.body.innerHTML = `<p>Unsupported device. <a href="${fileUrl}">Download contact file</a>.</p>`;
+  }
+</script>
