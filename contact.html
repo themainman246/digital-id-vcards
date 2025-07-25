@@ -6,29 +6,33 @@
   <title>Digital ID Card</title>
   <style>
     body {
-      font-family: sans-serif;
-      text-align: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: #f9f9f9;
-      padding: 40px;
+      text-align: center;
+      padding: 40px 20px;
+      margin: 0;
     }
 
-    .card {
+    .card-container {
       background-color: #fff;
       border-radius: 16px;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
       padding: 24px;
-      max-width: 400px;
-      margin: auto;
+      max-width: 420px;
+      margin: 0 auto 32px;
     }
 
-    .card img {
+    .card-image {
       width: 100%;
       border-radius: 12px;
       margin-bottom: 16px;
     }
 
-    .card h2 {
+    .card-title {
+      font-size: 20px;
+      font-weight: 600;
       margin-bottom: 8px;
+      color: #222;
     }
 
     .button {
@@ -39,32 +43,39 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      margin-top: 20px;
+      transition: background-color 0.2s ease-in-out;
     }
 
     .button:hover {
       background-color: #005FCC;
     }
+
+    .footer {
+      font-size: 14px;
+      color: #888;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
-  <div class="card">
-    <img id="cardImage" src="" alt="Digital ID Card" />
-    <h2 id="cardName">Contact Info</h2>
+  <div class="card-container">
+    <img id="cardImage" class="card-image" src="" alt="Digital ID Card" />
+    <div class="card-title" id="cardTitle">Your Digital Business Card</div>
     <p>Tap below to save this contact to your device.</p>
     <button class="button" onclick="downloadVCF()">Save Contact</button>
   </div>
+
+  <div class="footer">Powered by Barbados Digital ID</div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
     const slug = params.get('contact') || 'default';
 
-    // Link to your hosted card image and vCard file
     const imageUrl = `https://cdn.jsdelivr.net/gh/themainman246/digital-id-vcards/cards/${slug}-card.png`;
     const vcfUrl = `https://cdn.jsdelivr.net/gh/themainman246/digital-id-vcards/contacts/${slug}-contact.vcf`;
 
     document.getElementById("cardImage").src = imageUrl;
-    document.getElementById("cardName").textContent = slug.replace(/-/g, ' ');
+    document.getElementById("cardTitle").textContent = slug.replace(/-/g, " ");
 
     function downloadVCF() {
       const link = document.createElement('a');
@@ -72,6 +83,7 @@
       link.download = `${slug}.vcf`;
       document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
     }
   </script>
 </body>
