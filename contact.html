@@ -3,14 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Save Contact</title>
+  <title>Digital ID Card</title>
   <style>
     body {
       font-family: sans-serif;
       text-align: center;
-      padding: 40px;
       background-color: #f9f9f9;
+      padding: 40px;
     }
+
+    .card {
+      background-color: #fff;
+      border-radius: 16px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      padding: 24px;
+      max-width: 400px;
+      margin: auto;
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+
+    .card h2 {
+      margin-bottom: 8px;
+    }
+
     .button {
       background-color: #007AFF;
       color: #fff;
@@ -19,25 +39,36 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      margin-top: 20px;
     }
+
     .button:hover {
       background-color: #005FCC;
     }
   </style>
 </head>
 <body>
-  <h2>📇 Save Contact</h2>
-  <p>Tap the button below to download and import this contact.</p>
-  <button class="button" onclick="downloadVCF()">Save Contact</button>
+  <div class="card">
+    <img id="cardImage" src="" alt="Digital ID Card" />
+    <h2 id="cardName">Contact Info</h2>
+    <p>Tap below to save this contact to your device.</p>
+    <button class="button" onclick="downloadVCF()">Save Contact</button>
+  </div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
     const slug = params.get('contact') || 'default';
-    const fileUrl = `https://cdn.jsdelivr.net/gh/themainman246/digital-id-vcards/contacts/${slug}-contact.vcf`;
+
+    // Link to your hosted card image and vCard file
+    const imageUrl = `https://cdn.jsdelivr.net/gh/themainman246/digital-id-vcards/cards/${slug}-card.png`;
+    const vcfUrl = `https://cdn.jsdelivr.net/gh/themainman246/digital-id-vcards/contacts/${slug}-contact.vcf`;
+
+    document.getElementById("cardImage").src = imageUrl;
+    document.getElementById("cardName").textContent = slug.replace(/-/g, ' ');
 
     function downloadVCF() {
       const link = document.createElement('a');
-      link.href = fileUrl;
+      link.href = vcfUrl;
       link.download = `${slug}.vcf`;
       document.body.appendChild(link);
       link.click();
