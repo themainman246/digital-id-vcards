@@ -33,6 +33,7 @@
       font-weight: 600;
       margin-bottom: 8px;
       color: #222;
+      text-transform: capitalize;
     }
 
     .button {
@@ -60,7 +61,7 @@
 <body>
   <div class="card-container">
     <img id="cardImage" class="card-image" src="" alt="Digital ID Card" />
-    <div class="card-title" id="cardTitle">Your Digital Business Card</div>
+    <div class="card-title" id="cardTitle">Loading card...</div>
     <p>Tap below to save this contact to your device.</p>
     <button class="button" onclick="downloadVCF()">Save Contact</button>
   </div>
@@ -71,12 +72,18 @@
     const params = new URLSearchParams(window.location.search);
     const slug = params.get('contact') || 'default';
 
-    const imageUrl = `https://cdn.jsdelivr.net/gh/themainman246/digital-id-vcards/cards/${slug}-card.png`;
-    const vcfUrl = `https://cdn.jsdelivr.net/gh/themainman246/digital-id-vcards/contacts/${slug}-contact.vcf`;
+    const imageUrl = `cards/${slug}-card.png`; // served via GitHub Pages
+    const vcfUrl = `contacts/${slug}-contact.vcf`;
 
-    document.getElementById("cardImage").src = imageUrl;
-    document.getElementById("cardTitle").textContent = slug.replace(/-/g, " ");
+    // Preload card image
+    const img = document.getElementById("cardImage");
+    img.src = imageUrl;
 
+    // Set card title
+    const formattedSlug = slug.replace(/-/g, " ");
+    document.getElementById("cardTitle").textContent = formattedSlug;
+
+    // Download vCard
     function downloadVCF() {
       const link = document.createElement('a');
       link.href = vcfUrl;
